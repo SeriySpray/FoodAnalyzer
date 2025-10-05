@@ -33,7 +33,7 @@
                     android:text="Продукт"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="#212121"/>
+                    android:textColor="@android:color/white"/>
 
                 <TextView
                     android:id="@+id/tvProductWeight"
