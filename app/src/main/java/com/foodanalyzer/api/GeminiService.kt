@@ -1,5 +1,6 @@
 package com.foodanalyzer.api
 
+import android.util.Base64
 import com.foodanalyzer.models.Food
 import com.foodanalyzer.models.NutritionInfo
 import com.foodanalyzer.models.Product
@@ -14,7 +15,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.concurrent.TimeUnit
 
-class OpenAIService {
+class GeminiService {
     private val client = OkHttpClient.Builder()
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
@@ -23,9 +24,9 @@ class OpenAIService {
 
     private val gson = Gson()
 
-    // ВАЖЛИВО: Замініть YOUR_API_KEY на ваш справжній ключ OpenAI API
-    private val apiKey = "YOUR_API_KEY"
-    private val apiUrl = "https://api.openai.com/v1/chat/completions"
+    // ВАЖЛИВО: Замініть YOUR_API_KEY на ваш справжній ключ Gemini API
+    private val apiKey = "AIzaSyDXcSDv2lfavolkZMujB4zs1lF_l1SzdK0"
+    private val apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=$apiKey"
 
     suspend fun analyzeFood(base64Image: String): Food = withContext(Dispatchers.IO) {
         val prompt = """
@@ -47,25 +48,29 @@ class OpenAIService {
         """.trimIndent()
 
         val requestBody = JsonObject().apply {
-            addProperty("model", "gpt-4-vision-preview")
-            add("messages", gson.toJsonTree(listOf(
+            add("contents", gson.toJsonTree(listOf(
                 mapOf(
-                    "role" to "user",
-                    "content" to listOf(
-                        mapOf("type" to "text", "text" to prompt),
+                    "parts" to listOf(
+                        mapOf("text" to prompt),
                         mapOf(
-                            "type" to "image_url",
-                            "image_url" to mapOf("url" to "data:image/jpeg;base64,$base64Image")
+                            "inline_data" to mapOf(
+                                "mime_type" to "image/jpeg",
+                                "data" to base64Image
+                            )
                         )
                     )
                 )
             )))
-            addProperty("max_tokens", 1000)
+            add("generationConfig", JsonObject().apply {
+                addProperty("temperature", 0.4)
+                addProperty("topK", 32)
+                addProperty("topP", 1)
+                addProperty("maxOutputTokens", 2048)
+            })
         }.toString()
 
         val request = Request.Builder()
             .url(apiUrl)
-            .addHeader("Authorization", "Bearer $apiKey")
             .addHeader("Content-Type", "application/json")
             .post(requestBody.toRequestBody("application/json".toMediaType()))
             .build()
@@ -79,15 +84,18 @@ class OpenAIService {
 
         val jsonResponse = JsonParser.parseString(responseBody).asJsonObject
         val content = jsonResponse
-            .getAsJsonArray("choices")
-            .get(0).asJsonObject
-            .getAsJsonObject("message")
-            .get("content").asString
-            .trim()
-            .removePrefix("```json")
-            .removePrefix("```")
-            .removeSuffix("```")
-            .trim()
+            .getAsJsonArray("candidates")
+            ?.get(0)?.asJsonObject
+            ?.getAsJsonObject("content")
+            ?.getAsJsonArray("parts")
+            ?.get(0)?.asJsonObject
+            ?.get("text")?.asString
+            ?.trim()
+            ?.removePrefix("```json")
+            ?.removePrefix("```")
+            ?.removeSuffix("```")
+            ?.trim()
+            ?: throw Exception("Не вдалося отримати текст відповіді")
 
         gson.fromJson(content, Food::class.java)
     }
@@ -134,16 +142,23 @@ class OpenAIService {
         """.trimIndent()
 
         val requestBody = JsonObject().apply {
-            addProperty("model", "gpt-4-turbo-preview")
-            add("messages", gson.toJsonTree(listOf(
-                mapOf("role" to "user", "content" to prompt)
+            add("contents", gson.toJsonTree(listOf(
+                mapOf(
+                    "parts" to listOf(
+                        mapOf("text" to prompt)
+                    )
+                )
             )))
-            addProperty("max_tokens", 2000)
+            add("generationConfig", JsonObject().apply {
+                addProperty("temperature", 0.4)
+                addProperty("topK", 32)
+                addProperty("topP", 1)
+                addProperty("maxOutputTokens", 4096)
+            })
         }.toString()
 
         val request = Request.Builder()
             .url(apiUrl)
-            .addHeader("Authorization", "Bearer $apiKey")
             .addHeader("Content-Type", "application/json")
             .post(requestBody.toRequestBody("application/json".toMediaType()))
             .build()
@@ -157,15 +172,18 @@ class OpenAIService {
 
         val jsonResponse = JsonParser.parseString(responseBody).asJsonObject
         val content = jsonResponse
-            .getAsJsonArray("choices")
-            .get(0).asJsonObject
-            .getAsJsonObject("message")
-            .get("content").asString
-            .trim()
-            .removePrefix("```json")
-            .removePrefix("```")
-            .removeSuffix("```")
-            .trim()
+            .getAsJsonArray("candidates")
+            ?.get(0)?.asJsonObject
+            ?.getAsJsonObject("content")
+            ?.getAsJsonArray("parts")
+            ?.get(0)?.asJsonObject
+            ?.get("text")?.asString
+            ?.trim()
+            ?.removePrefix("```json")
+            ?.removePrefix("```")
+            ?.removeSuffix("```")
+            ?.trim()
+            ?: throw Exception("Не вдалося отримати текст відповіді")
 
         gson.fromJson(content, Food::class.java)
     }

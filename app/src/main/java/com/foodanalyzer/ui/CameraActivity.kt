@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.foodanalyzer.api.OpenAIService
+import com.foodanalyzer.api.GeminiService
 import com.foodanalyzer.databinding.ActivityCameraBinding
 import com.foodanalyzer.models.Food
 import com.google.gson.Gson
@@ -26,7 +26,7 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
-    private val openAIService = OpenAIService()
+    private val geminiService = GeminiService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,7 +108,7 @@ class CameraActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val base64Image = bitmapToBase64(bitmap)
-                val food = openAIService.analyzeFood(base64Image)
+                val food = geminiService.analyzeFood(base64Image)
 
                 withContext(Dispatchers.Main) {
                     binding.progressBar.visibility = android.view.View.GONE
@@ -133,7 +133,7 @@ class CameraActivity : AppCompatActivity() {
         val outputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
         val byteArray = outputStream.toByteArray()
-        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
     }
 
     override fun onDestroy() {

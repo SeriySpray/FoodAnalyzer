@@ -3,19 +3,42 @@ package com.foodanalyzer
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.foodanalyzer.api.GeminiService
 import com.foodanalyzer.databinding.ActivityMainBinding
 import com.foodanalyzer.ui.CameraActivity
+import com.foodanalyzer.ui.EditProductsActivity
+import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val geminiService = GeminiService()
 
     companion object {
         private const val CAMERA_PERMISSION_CODE = 100
+    }
+
+    private val galleryLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            analyzeImageFromGallery(it)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +52,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 requestCameraPermission()
             }
+        }
+
+        binding.btnSelectFromGallery.setOnClickListener {
+            openGallery()
         }
     }
 
@@ -64,5 +91,56 @@ class MainActivity : AppCompatActivity() {
 
     private fun openCamera() {
         startActivity(Intent(this, CameraActivity::class.java))
+    }
+
+    private fun openGallery() {
+        galleryLauncher.launch("image/*")
+    }
+
+    private fun analyzeImageFromGallery(uri: Uri) {
+        binding.progressBar.visibility = android.view.View.VISIBLE
+        binding.btnTakePhoto.isEnabled = false
+        binding.btnSelectFromGallery.isEnabled = false
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val bitmap = uriToBitmap(uri)
+                val base64Image = bitmapToBase64(bitmap)
+                val food = geminiService.analyzeFood(base64Image)
+
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = android.view.View.GONE
+                    binding.btnTakePhoto.isEnabled = true
+                    binding.btnSelectFromGallery.isEnabled = true
+
+                    val intent = Intent(this@MainActivity, EditProductsActivity::class.java)
+                    intent.putExtra("food_json", Gson().toJson(food))
+                    startActivity(intent)
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    binding.progressBar.visibility = android.view.View.GONE
+                    binding.btnTakePhoto.isEnabled = true
+                    binding.btnSelectFromGallery.isEnabled = true
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Помилка аналізу: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun uriToBitmap(uri: Uri): Bitmap {
+        val inputStream = contentResolver.openInputStream(uri)
+        return BitmapFactory.decodeStream(inputStream)
+    }
+
+    private fun bitmapToBase64(bitmap: Bitmap): String {
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+        val byteArray = outputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.NO_WRAP)
     }
 }

@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.foodanalyzer"
-    compileSdk = 36
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.foodanalyzer"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 

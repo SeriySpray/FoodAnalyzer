@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foodanalyzer.adapters.ProductsAdapter
-import com.foodanalyzer.api.OpenAIService
+import com.foodanalyzer.api.GeminiService
 import com.foodanalyzer.databinding.ActivityEditProductsBinding
 import com.foodanalyzer.databinding.DialogAddProductBinding
 import com.foodanalyzer.models.Food
@@ -22,7 +22,7 @@ class EditProductsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProductsBinding
     private lateinit var food: Food
     private lateinit var adapter: ProductsAdapter
-    private val openAIService = OpenAIService()
+    private val geminiService = GeminiService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,7 +119,7 @@ class EditProductsActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val analyzedFood = openAIService.analyzeNutrition(food)
+                val analyzedFood = geminiService.analyzeNutrition(food)
 
                 withContext(Dispatchers.Main) {
                     binding.progressBar.visibility = android.view.View.GONE
