@@ -4,15 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@drawable/gradient_button">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#FF6B35"
-        android:elevation="4dp"
-        app:title="Результати аналізу"
+        android:layout_height="0dp"
+        android:background="#EEAECA"
+        android:elevation="0dp"
         app:titleTextColor="@android:color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +37,7 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#FF6B35"
+                app:cardBackgroundColor="@color/primary"
                 android:layout_marginBottom="16dp">
 
                 <LinearLayout
@@ -125,9 +124,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Білки"
-                                android:textSize="12sp"
-                                android:textColor="@android:color/white"
-                                android:alpha="0.8"/>
+                                android:textSize="14sp"
+                                android:textColor="@android:color/white"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -158,9 +156,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Жири"
-                                android:textSize="12sp"
-                                android:textColor="@android:color/white"
-                                android:alpha="0.8"/>
+                                android:textSize="14sp"
+                                android:textColor="@android:color/white"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -191,9 +188,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Вуглеводи"
-                                android:textSize="12sp"
-                                android:textColor="@android:color/white"
-                                android:alpha="0.8"/>
+                                android:textSize="14sp"
+                                android:textColor="@android:color/white"/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -209,11 +205,11 @@
                 android:textColor="#212121"
                 android:layout_marginBottom="12dp"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvProducts"
+            <LinearLayout
+                android:id="@+id/productsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
+                android:orientation="vertical"
                 android:layout_marginBottom="16dp"/>
 
             <com.google.android.material.button.MaterialButton

@@ -72,7 +72,6 @@
             android:orientation="vertical"
             android:layout_marginTop="12dp"
             android:padding="12dp"
-            android:background="@drawable/nutrition_background"
             android:visibility="gone">
 
             <TextView
@@ -81,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:text="Калорії: 0 ккал"
                 android:textSize="14sp"
-                android:textColor="#212121"
+                android:textColor="@color/white"
                 android:layout_marginBottom="4dp"/>
 
             <TextView
@@ -90,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:text="Білки: 0 г"
                 android:textSize="14sp"
-                android:textColor="#212121"
+                android:textColor="@color/white"
                 android:layout_marginBottom="4dp"/>
 
             <TextView
@@ -99,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:text="Жири: 0 г"
                 android:textSize="14sp"
-                android:textColor="#212121"
+                android:textColor="@color/white"
                 android:layout_marginBottom="4dp"/>
 
             <TextView
@@ -108,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:text="Вуглеводи: 0 г"
                 android:textSize="14sp"
-                android:textColor="#212121"/>
+                android:textColor="@color/white"/>
         </LinearLayout>
 
     </LinearLayout>

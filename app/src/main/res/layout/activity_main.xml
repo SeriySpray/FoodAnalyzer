@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/gradient_button"
     android:padding="24dp"
     tools:context=".MainActivity">
 
@@ -60,7 +60,7 @@
         app:iconPadding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitle" />
+        app:layout_constraintTop_toBottomOf="@id/tvSubtitle"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSelectFromGallery"
