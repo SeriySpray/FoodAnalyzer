@@ -9,7 +9,7 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="#EEAECA"
         android:elevation="4dp"
         app:titleTextColor="@android:color/white"
@@ -55,6 +55,17 @@
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
                         android:layout_gravity="center"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvMealDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10 жовтня 2024, 14:30"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center"
+                        android:alpha="0.9"
                         android:layout_marginBottom="20dp"/>
 
                     <LinearLayout
@@ -124,8 +135,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Білки"
-                                android:textSize="14sp"
-                                android:textColor="@android:color/white"/>
+                                android:textSize="12sp"
+                                android:textColor="@android:color/white"
+                                android:alpha="0.8"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -134,7 +146,6 @@
                             android:layout_weight="1"
                             android:orientation="vertical"
                             android:gravity="center">
-
                             <ImageView
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
@@ -156,8 +167,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Жири"
-                                android:textSize="14sp"
-                                android:textColor="@android:color/white"/>
+                                android:textSize="12sp"
+                                android:textColor="@android:color/white"
+                                android:alpha="0.8"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -188,8 +200,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Вуглеводи"
-                                android:textSize="14sp"
-                                android:textColor="@android:color/white"/>
+                                android:textSize="12sp"
+                                android:textColor="@android:color/white"
+                                android:alpha="0.8"/>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -199,7 +212,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Інформація по продуктам"
+                android:text="Склад страви"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#212121"
@@ -209,31 +222,8 @@
                 android:id="@+id/productsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="16dp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSave"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="Зберегти страву"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:cornerRadius="30dp"
-                app:icon="@drawable/ic_save"
-                android:layout_marginBottom="12dp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnClose"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="Завершити"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:cornerRadius="30dp"
-                style="@style/Widget.Material3.Button.TonalButton"/>
+                android:orientation="vertical"/>
 
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

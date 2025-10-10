@@ -9,15 +9,20 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import com.foodanalyzer.api.GeminiService
 import com.foodanalyzer.databinding.ActivityMainBinding
 import com.foodanalyzer.ui.CameraActivity
 import com.foodanalyzer.ui.EditProductsActivity
+import com.foodanalyzer.ui.HistoryActivity
+import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,9 +30,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private val geminiService = GeminiService()
+    private lateinit var toggle: ActionBarDrawerToggle
 
     companion object {
         private const val CAMERA_PERMISSION_CODE = 100
@@ -46,6 +52,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupNavigationDrawer()
+
         binding.btnTakePhoto.setOnClickListener {
             if (checkCameraPermission()) {
                 openCamera()
@@ -56,6 +64,40 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnSelectFromGallery.setOnClickListener {
             openGallery()
+        }
+    }
+
+    private fun setupNavigationDrawer() {
+
+        toggle = ActionBarDrawerToggle(
+            this,
+            binding.drawerLayout,
+            binding.toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        toggle.drawerArrowDrawable.color = android.graphics.Color.BLACK
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        binding.navView.setNavigationItemSelectedListener(this)
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_history -> {
+                startActivity(Intent(this, HistoryActivity::class.java))
+            }
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
         }
     }
 

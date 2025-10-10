@@ -9,7 +9,7 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="#EEAECA"
         android:elevation="4dp"
         app:titleTextColor="@android:color/white"
@@ -35,10 +35,29 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="16dp">
+
+                <CalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/statsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/primary"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -47,21 +66,20 @@
                     android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/tvFoodName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Назва страви"
-                        android:textSize="24sp"
+                        android:text="Статистика за день"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="20dp"/>
+                        android:layout_marginBottom="16dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="4">
+                        android:weightSum="4"
+                        android:layout_marginBottom="20dp">
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -71,18 +89,18 @@
                             android:gravity="center">
 
                             <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
                                 android:src="@drawable/ic_fire"
                                 app:tint="@android:color/white"
-                                android:layout_marginBottom="8dp"/>
+                                android:layout_marginBottom="6dp"/>
 
                             <TextView
-                                android:id="@+id/tvCalories"
+                                android:id="@+id/tvTotalCalories"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0 ккал"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@android:color/white"
                                 android:gravity="center"/>
@@ -91,7 +109,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Калорії"
-                                android:textSize="12sp"
+                                android:textSize="11sp"
                                 android:textColor="@android:color/white"
                                 android:alpha="0.8"/>
                         </LinearLayout>
@@ -104,18 +122,18 @@
                             android:gravity="center">
 
                             <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
                                 android:src="@drawable/ic_protein"
                                 app:tint="@android:color/white"
-                                android:layout_marginBottom="8dp"/>
+                                android:layout_marginBottom="6dp"/>
 
                             <TextView
-                                android:id="@+id/tvProteins"
+                                android:id="@+id/tvTotalProteins"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0 г"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@android:color/white"
                                 android:gravity="center"/>
@@ -124,8 +142,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Білки"
-                                android:textSize="14sp"
-                                android:textColor="@android:color/white"/>
+                                android:textSize="11sp"
+                                android:textColor="@android:color/white"
+                                android:alpha="0.8"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -136,18 +155,18 @@
                             android:gravity="center">
 
                             <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
                                 android:src="@drawable/ic_fat"
                                 app:tint="@android:color/white"
-                                android:layout_marginBottom="8dp"/>
+                                android:layout_marginBottom="6dp"/>
 
                             <TextView
-                                android:id="@+id/tvFats"
+                                android:id="@+id/tvTotalFats"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0 г"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@android:color/white"
                                 android:gravity="center"/>
@@ -156,8 +175,9 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Жири"
-                                android:textSize="14sp"
-                                android:textColor="@android:color/white"/>
+                                android:textSize="11sp"
+                                android:textColor="@android:color/white"
+                                android:alpha="0.8"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -168,18 +188,18 @@
                             android:gravity="center">
 
                             <ImageView
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
                                 android:src="@drawable/ic_carbs"
                                 app:tint="@android:color/white"
-                                android:layout_marginBottom="8dp"/>
+                                android:layout_marginBottom="6dp"/>
 
                             <TextView
-                                android:id="@+id/tvCarbs"
+                                android:id="@+id/tvTotalCarbs"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0 г"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold"
                                 android:textColor="@android:color/white"
                                 android:gravity="center"/>
@@ -188,50 +208,56 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Вуглеводи"
-                                android:textSize="14sp"
-                                android:textColor="@android:color/white"/>
+                                android:textSize="11sp"
+                                android:textColor="@android:color/white"
+                                android:alpha="0.8"/>
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Баланс БЖВ"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:layout_marginBottom="12dp"/>
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"/>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Інформація по продуктам"
+                android:text="Страви за день"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#212121"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="12dp"/>
-
-            <LinearLayout
-                android:id="@+id/productsContainer"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvEmptyMessage"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="16dp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSave"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="Зберегти страву"
+                android:text="Немає збережених страв за цей день"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                app:cornerRadius="30dp"
-                app:icon="@drawable/ic_save"
-                android:layout_marginBottom="12dp"/>
+                android:textColor="#757575"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:visibility="visible"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnClose"
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMeals"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="Завершити"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:cornerRadius="30dp"
-                style="@style/Widget.Material3.Button.TonalButton"/>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
     </ScrollView>

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FoodAnalyzer</string>
+    <string name="navigation_drawer_open">Відкрити меню</string>
+    <string name="navigation_drawer_close">Закрити меню</string>
 </resources>

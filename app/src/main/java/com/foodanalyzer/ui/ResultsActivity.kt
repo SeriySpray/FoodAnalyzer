@@ -2,30 +2,43 @@ package com.foodanalyzer.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.foodanalyzer.MainActivity
 import com.foodanalyzer.adapters.ProductsAdapter
+import com.foodanalyzer.database.AppDatabase
 import com.foodanalyzer.databinding.ActivityResultsBinding
 import com.foodanalyzer.models.Food
+import com.foodanalyzer.models.SavedMeal
+import com.foodanalyzer.repository.MealRepository
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 
 class ResultsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResultsBinding
     private lateinit var food: Food
+    private lateinit var repository: MealRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResultsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val database = AppDatabase.getDatabase(this)
+        repository = MealRepository(database.mealDao())
+
         val foodJson = intent.getStringExtra("food_json")
         food = Gson().fromJson(foodJson, Food::class.java)
 
         displayResults()
 
+        binding.btnSave.setOnClickListener {
+            saveMeal()
+        }
+
         binding.btnClose.setOnClickListener {
-            // Повертаємось на головний екран
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
@@ -43,7 +56,6 @@ class ResultsActivity : AppCompatActivity() {
             binding.tvCarbs.text = "${String.format("%.1f", nutrition.carbs)} г"
         }
 
-        // Додаємо продукти динамічно
         binding.productsContainer.removeAllViews()
 
         food.products.forEach { product ->
@@ -74,6 +86,31 @@ class ResultsActivity : AppCompatActivity() {
             }
 
             binding.productsContainer.addView(itemView)
+        }
+    }
+
+    private fun saveMeal() {
+        food.nutrition?.let { nutrition ->
+            val savedMeal = SavedMeal(
+                name = food.name,
+                date = System.currentTimeMillis(),
+                totalCalories = nutrition.calories,
+                totalProteins = nutrition.proteins,
+                totalFats = nutrition.fats,
+                totalCarbs = nutrition.carbs,
+                products = Gson().toJson(food.products)
+            )
+
+            lifecycleScope.launch {
+                try {
+                    repository.insertMeal(savedMeal)
+                    Toast.makeText(this@ResultsActivity, "Страву збережено!", Toast.LENGTH_SHORT).show()
+                    binding.btnSave.isEnabled = false
+                    binding.btnSave.text = "Збережено"
+                } catch (e: Exception) {
+                    Toast.makeText(this@ResultsActivity, "Помилка збереження: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 }

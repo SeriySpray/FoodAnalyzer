@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.devtools.ksp") version "1.9.20-1.0.14"
 }
 
 android {
@@ -47,6 +48,17 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+
+    // Navigation Drawer
+    implementation("com.google.android.material:material:1.11.0")
+
+    // MPAndroidChart для діаграм
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // CameraX
     implementation("androidx.camera:camera-core:1.3.1")
