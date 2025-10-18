@@ -4,6 +4,7 @@ import android.util.Base64
 import com.foodanalyzer.models.Food
 import com.foodanalyzer.models.NutritionInfo
 import com.foodanalyzer.models.Product
+import com.github.mikephil.charting.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -24,8 +25,8 @@ class GeminiService {
 
     private val gson = Gson()
 
-    // ВАЖЛИВО: Замініть YOUR_API_KEY на ваш справжній ключ Gemini API
-    private val apiKey = "AIzaSyDXcSDv2lfavolkZMujB4zs1lF_l1SzdK0"
+
+    private val apiKey = com.foodanalyzer.BuildConfig.API_KEY
     private val apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=$apiKey"
 
     suspend fun analyzeFood(base64Image: String): Food = withContext(Dispatchers.IO) {

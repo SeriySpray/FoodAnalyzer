@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/gray_dark">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,8 +42,8 @@
                     android:layout_height="wrap_content"
                     android:text="14:30"
                     android:textSize="13sp"
-                    android:textColor="#757575"
-                    android:layout_marginTop="2dp"/>
+                    android:textColor="@color/gray_text"
+                    android:layout_marginTop="4dp"/>
 
             </LinearLayout>
 
@@ -51,10 +52,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="500 ккал"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:layout_marginEnd="8dp"/>
+                android:layout_marginEnd="12dp"/>
 
             <ImageButton
                 android:id="@+id/btnDelete"
@@ -63,7 +64,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_delete"
                 android:contentDescription="Видалити"
-                app:tint="#F44336"/>
+                app:tint="@color/gray_text"/>
         </LinearLayout>
 
         <LinearLayout
@@ -71,15 +72,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="12dp"
-            android:padding="10dp">
+            android:padding="12dp"
+            android:background="@color/gray_medium">
 
             <TextView
                 android:id="@+id/tvProteins"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Білки: 25.0г"
-                android:textSize="14sp"
-                android:textColor="#757575"
+                android:textSize="13sp"
+                android:textColor="@color/white"
                 android:layout_marginBottom="4dp"/>
 
             <TextView
@@ -87,8 +89,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Жири: 15.0г"
-                android:textSize="14sp"
-                android:textColor="#757575"
+                android:textSize="13sp"
+                android:textColor="@color/white"
                 android:layout_marginBottom="4dp"/>
 
             <TextView
@@ -96,8 +98,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Вуглеводи: 60.0г"
-                android:textSize="14sp"
-                android:textColor="#757575"/>
+                android:textSize="13sp"
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 

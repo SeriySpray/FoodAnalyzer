@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="primary">#FF6200EE</color>
-    <color name="primary_dark">#FF3700B3</color>
-    <color name="accent">#FF03DAC5</color>
-    <color name="gray">#FF757575</color>
-    <color name="light_gray">#FFE0E0E0</color>
+    <!-- Основні кольори -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray_dark">#1A1A1A</color>
+    <color name="gray_medium">#2A2A2A</color>
+    <color name="gray_light">#424242</color>
+    <color name="gray_text">#B0B0B0</color>
+
+    <!-- Акцентні кольори -->
+    <color name="primary">#000000</color>
+    <color name="primary_variant">#1A1A1A</color>
+    <color name="secondary">#FFFFFF</color>
+
+    <!-- Статус бар -->
+    <color name="status_bar">#000000</color>
+
+    <!-- Кнопки -->
+    <color name="button_background">#FFFFFF</color>
+    <color name="button_text">#000000</color>
+
+    <!-- Іконки -->
+    <color name="icon_tint">#FFFFFF</color>
+
+    <!-- Графіки -->
+    <color name="chart_protein">#FFFFFF</color>
+    <color name="chart_fat">#B0B0B0</color>
+    <color name="chart_carbs">#666666</color>
 </resources>

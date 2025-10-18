@@ -1,6 +1,7 @@
 package com.foodanalyzer.ui
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.CalendarView
 import androidx.appcompat.app.AppCompatActivity
@@ -116,13 +117,16 @@ class HistoryActivity : AppCompatActivity() {
             )
 
             val dataSet = com.github.mikephil.charting.data.PieDataSet(entries, "")
+
+            // Мінімалістична кольорова схема: білий, сірий, темно-сірий
             dataSet.colors = listOf(
-                android.graphics.Color.parseColor("#FF6B35"), // Білки - помаранчевий
-                android.graphics.Color.parseColor("#F7931E"), // Жири - жовтий
-                android.graphics.Color.parseColor("#EEAECA")  // Вуглеводи - рожевий
+                Color.WHITE,
+                Color.parseColor("#B0B0B0"),
+                Color.parseColor("#666666")
             )
             dataSet.valueTextSize = 12f
-            dataSet.valueTextColor = android.graphics.Color.WHITE
+            dataSet.valueTextColor = Color.BLACK
+            dataSet.setDrawValues(true)
 
             val data = com.github.mikephil.charting.data.PieData(dataSet)
             data.setValueFormatter(object : com.github.mikephil.charting.formatter.ValueFormatter() {
@@ -133,17 +137,18 @@ class HistoryActivity : AppCompatActivity() {
 
             binding.pieChart.data = data
             binding.pieChart.description.isEnabled = false
+            binding.pieChart.setDrawEntryLabels(false)
+            binding.pieChart.isRotationEnabled = false
+            binding.pieChart.setHoleColor(Color.TRANSPARENT)
+            binding.pieChart.holeRadius = 0f
+            binding.pieChart.transparentCircleRadius = 0f
 
-            //Підпис під діаграмою
-            binding.pieChart.legend.textColor = android.graphics.Color.BLACK
-            binding.pieChart.legend.textSize = 16f
-            binding.pieChart.legend.formSize = 14f
+            // Підпис під діаграмою
+            binding.pieChart.legend.textColor = Color.WHITE
+            binding.pieChart.legend.textSize = 14f
+            binding.pieChart.legend.formSize = 12f
 
-            //Підпис на діаграмі
-            binding.pieChart.setEntryLabelColor(android.graphics.Color.BLACK)
-            binding.pieChart.setEntryLabelTextSize(12f)
-
-            binding.pieChart.animateY(1000)
+            binding.pieChart.animateY(800)
             binding.pieChart.invalidate()
         }
     }

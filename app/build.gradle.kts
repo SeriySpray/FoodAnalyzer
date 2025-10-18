@@ -1,7 +1,15 @@
+import java.io.FileInputStream
+import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp") version "1.9.20-1.0.14"
+}
+val keysPropertiesFile = rootProject.file("keys.properties")
+val keysProperties = Properties().apply {
+    if (keysPropertiesFile.exists()) {
+        FileInputStream(keysPropertiesFile).use { load(it) }
+    }
 }
 
 android {
@@ -16,6 +24,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "API_KEY", "\"${keysProperties.getProperty("API_KEY") ?: ""}\"")
     }
 
     buildTypes {
@@ -26,6 +35,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
     }
 
     compileOptions {
@@ -82,3 +95,4 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+

@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
         )
-        toggle.drawerArrowDrawable.color = android.graphics.Color.BLACK
+        toggle.drawerArrowDrawable.color = android.graphics.Color.WHITE
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 

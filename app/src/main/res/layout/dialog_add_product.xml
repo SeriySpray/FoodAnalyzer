@@ -5,19 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/gray_dark">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Назва продукту"
         app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@color/gray_medium"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/gray_text"
         android:layout_marginBottom="16dp">
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etProductName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:inputType="text"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -25,13 +29,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Вага (грами)"
-        app:boxBackgroundMode="outline">
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@color/gray_medium"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/gray_text">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etProductWeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:inputType="numberDecimal"/>
     </com.google.android.material.textfield.TextInputLayout>
-
 </LinearLayout>
