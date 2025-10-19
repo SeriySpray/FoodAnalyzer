@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Base64
 import android.view.MenuItem
 import android.widget.Toast
@@ -18,10 +17,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import com.foodanalyzer.api.GeminiService
+import com.foodanalyzer.database.AppDatabase
 import com.foodanalyzer.databinding.ActivityMainBinding
+import com.foodanalyzer.models.UserSettings
+import com.foodanalyzer.repository.MealRepository
+import androidx.lifecycle.lifecycleScope
+import com.foodanalyzer.repository.UserSettingsRepository
 import com.foodanalyzer.ui.CameraActivity
 import com.foodanalyzer.ui.EditProductsActivity
 import com.foodanalyzer.ui.HistoryActivity
+import com.foodanalyzer.ui.SettingsActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -29,11 +34,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
-
+import java.util.Calendar
+import java.util.Date
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private val geminiService = GeminiService()
     private lateinit var toggle: ActionBarDrawerToggle
+
+    private lateinit var userSettingsRepository: UserSettingsRepository
+
+    private lateinit var mealRepository: MealRepository
 
     companion object {
         private const val CAMERA_PERMISSION_CODE = 100
@@ -47,12 +57,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadTodayProgress()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupNavigationDrawer()
+
+        val database = AppDatabase.getDatabase(this)
+        userSettingsRepository = UserSettingsRepository(database.userSettingsDao())
+        mealRepository = MealRepository(database.mealDao())
+
+        loadTodayProgress()
 
         binding.btnTakePhoto.setOnClickListener {
             if (checkCameraPermission()) {
@@ -66,7 +87,107 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             openGallery()
         }
     }
+    private fun loadTodayProgress() {
+        lifecycleScope.launch {
+            userSettingsRepository.getUserSettings().collect { settings ->
+                if (settings != null && settings.minCalories > 0 && settings.maxCalories > 0) {
+                    binding.caloriesProgressContainer.visibility = android.view.View.VISIBLE
 
+                    // Отримуємо страви за сьогодні
+                    val today = Date()
+
+                    // Запускаємо окремий launch для другого flow
+                    launch {
+                        mealRepository.getMealsByDate(today).collect { meals ->
+                            val totalCalories = meals.sumOf { it.totalCalories }
+
+                            // Форматуємо текст з діапазоном норми
+                            binding.tvTodayCalories.text = "Сьогодні: ${String.format("%.0f", totalCalories)} ккал / ${String.format("%.0f", settings.maxCalories)} ккал"
+
+                            binding.caloriesProgressView.setCaloriesData(
+                                settings.minCalories,
+                                settings.maxCalories,
+                                totalCalories
+                            )
+
+                            binding.tvStreak.text = "${settings.currentStreak} днів підряд"
+
+                            // Перевіряємо і оновлюємо streak
+                            updateStreak(settings, totalCalories, today)
+                        }
+                    }
+                } else {
+                    binding.caloriesProgressContainer.visibility = android.view.View.GONE
+                }
+            }
+        }
+    }
+
+    private suspend fun updateStreak(settings: UserSettings, todayCalories: Double, today: Date) {
+        val calendar = Calendar.getInstance()
+        calendar.time = today
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        val todayStart = calendar.timeInMillis
+
+        // Перевіряємо чи сьогодні в нормі
+        val isInRange = todayCalories >= settings.minCalories && todayCalories <= settings.maxCalories
+
+        // Якщо останнє оновлення було 0 (ніколи), це перший день
+        if (settings.lastStreakDate == 0L) {
+            if (isInRange && todayCalories > 0) {
+                userSettingsRepository.updateStreak(1, todayStart)
+            }
+            return
+        }
+
+        val lastStreakCalendar = Calendar.getInstance()
+        lastStreakCalendar.timeInMillis = settings.lastStreakDate
+        lastStreakCalendar.set(Calendar.HOUR_OF_DAY, 0)
+        lastStreakCalendar.set(Calendar.MINUTE, 0)
+        lastStreakCalendar.set(Calendar.SECOND, 0)
+        lastStreakCalendar.set(Calendar.MILLISECOND, 0)
+        val lastStreakStart = lastStreakCalendar.timeInMillis
+
+        val daysDifference = ((todayStart - lastStreakStart) / (1000 * 60 * 60 * 24)).toInt()
+
+        when {
+            daysDifference == 0 -> {
+                // Той самий день - оновлюємо тільки якщо змінився статус норми
+                if (isInRange && todayCalories > 0) {
+                    // Якщо зараз в нормі, але streak = 0, встановлюємо 1
+                    if (settings.currentStreak == 0) {
+                        userSettingsRepository.updateStreak(1, todayStart)
+                    }
+                } else if (!isInRange || todayCalories == 0.0) {
+                    // Якщо вийшли з норми або немає калорій
+                    if (settings.currentStreak > 0) {
+                        userSettingsRepository.updateStreak(0, todayStart)
+                    }
+                }
+            }
+            daysDifference == 1 -> {
+                // Наступний день
+                if (isInRange && todayCalories > 0) {
+                    // Продовжуємо streak
+                    userSettingsRepository.updateStreak(settings.currentStreak + 1, todayStart)
+                } else {
+                    // Скидаємо streak
+                    userSettingsRepository.updateStreak(0, todayStart)
+                }
+            }
+            daysDifference > 1 -> {
+                // Пропустили дні - скидаємо streak
+                if (isInRange && todayCalories > 0) {
+                    userSettingsRepository.updateStreak(1, todayStart)
+                } else {
+                    userSettingsRepository.updateStreak(0, todayStart)
+                }
+            }
+        }
+    }
     private fun setupNavigationDrawer() {
 
         toggle = ActionBarDrawerToggle(
@@ -87,6 +208,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_history -> {
                 startActivity(Intent(this, HistoryActivity::class.java))
+            }
+            R.id.nav_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
             }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

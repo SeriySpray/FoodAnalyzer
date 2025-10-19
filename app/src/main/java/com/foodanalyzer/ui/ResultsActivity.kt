@@ -104,12 +104,18 @@ class ResultsActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     repository.insertMeal(savedMeal)
+
+                    // Відправляємо broadcast для оновлення головного екрану
+                    val intent = Intent("com.foodanalyzer.MEAL_SAVED")
+                    sendBroadcast(intent)
+
                     Toast.makeText(this@ResultsActivity, "Страву збережено!", Toast.LENGTH_SHORT).show()
                     binding.btnSave.isEnabled = false
                     binding.btnSave.text = "Збережено"
                 } catch (e: Exception) {
                     Toast.makeText(this@ResultsActivity, "Помилка збереження: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
+
             }
         }
     }
