@@ -36,6 +36,7 @@ import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.util.Calendar
 import java.util.Date
+
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityMainBinding
     private val geminiService = GeminiService()
@@ -86,6 +87,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.btnSelectFromGallery.setOnClickListener {
             openGallery()
         }
+
+        binding.btnCreateMeal.setOnClickListener {
+            createMealManually()
+        }
+    }
+    private fun createMealManually() {
+        // Створюємо порожню страву з порожньою назвою та списком продуктів
+        val food = com.foodanalyzer.models.Food(
+            name = "",
+            products = mutableListOf(),
+            nutrition = null
+        )
+
+        // Перетворюємо об'єкт в JSON
+        val foodJson = Gson().toJson(food)
+
+        // Створюємо Intent для переходу до EditProductsActivity
+        val intent = Intent(this, EditProductsActivity::class.java)
+        intent.putExtra("food_json", foodJson)
+        startActivity(intent)
     }
     private fun loadTodayProgress() {
         lifecycleScope.launch {
@@ -124,6 +145,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private suspend fun updateStreak(settings: UserSettings, todayCalories: Double, today: Date) {
+        // Якщо норми не встановлені, не оновлюємо streak
+        if (settings.minCalories == 0.0 && settings.maxCalories == 0.0) {
+            return
+        }
+
         val calendar = Calendar.getInstance()
         calendar.time = today
         calendar.set(Calendar.HOUR_OF_DAY, 0)
@@ -188,6 +214,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
     }
+
     private fun setupNavigationDrawer() {
 
         toggle = ActionBarDrawerToggle(

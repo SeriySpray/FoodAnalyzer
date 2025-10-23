@@ -3,7 +3,6 @@ package com.foodanalyzer.ui
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.CalendarView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -131,7 +130,12 @@ class HistoryActivity : AppCompatActivity() {
             val data = com.github.mikephil.charting.data.PieData(dataSet)
             data.setValueFormatter(object : com.github.mikephil.charting.formatter.ValueFormatter() {
                 override fun getFormattedValue(value: Float): String {
-                    return String.format("%.1f%%", value)
+                    // Не показувати відсотки менші за 1%
+                    return if (value < 1f) {
+                        ""
+                    } else {
+                        "${value.toInt()}%"
+                    }
                 }
             })
 

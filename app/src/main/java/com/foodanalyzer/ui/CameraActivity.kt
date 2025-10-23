@@ -12,7 +12,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.foodanalyzer.api.GeminiService
 import com.foodanalyzer.databinding.ActivityCameraBinding
-import com.foodanalyzer.models.Food
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

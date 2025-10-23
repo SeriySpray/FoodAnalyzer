@@ -21,7 +21,9 @@ class UserSettingsRepository(private val userSettingsDao: UserSettingsDao) {
 
     suspend fun updateStreak(streak: Int, lastDate: Long) {
         val currentSettings = userSettingsDao.getUserSettingsSync()
-            ?: UserSettings(currentStreak = streak, lastStreakDate = lastDate)
+
+        // Якщо налаштувань немає, просто виходимо
+        if (currentSettings == null) return
 
         val updatedSettings = currentSettings.copy(
             currentStreak = streak,

@@ -28,56 +28,69 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-       <LinearLayout
-        android:id="@+id/caloriesProgressContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:id="@+id/tvTodayCalories"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Сьогодні: 0 ккал / 0 ккал"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_marginBottom="12dp"/>
-
-        <com.foodanalyzer.views.CaloriesProgressView
-            android:id="@+id/caloriesProgressView"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginBottom="12dp"/>
+        <com.google.android.material.card.MaterialCardView
+           android:id="@+id/caloriesProgressContainer"
+           android:layout_width="0dp"
+           android:layout_height="wrap_content"
+           android:layout_marginStart="2dp"
+           android:layout_marginEnd="2dp"
+           android:layout_marginTop="16dp"
+           app:cardCornerRadius="8dp"
+           app:cardElevation="0dp"
+           app:cardBackgroundColor="@android:color/transparent"
+           app:strokeColor="@color/white"
+           app:strokeWidth="1dp"
+           android:visibility="gone"
+           app:layout_constraintTop_toBottomOf="@id/toolbar"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_fire"
-                app:tint="@color/white"
-                android:layout_marginEnd="8dp"/>
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/tvStreak"
+                android:id="@+id/tvTodayCalories"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 днів підряд"
-                android:textSize="14sp"
-                android:textColor="@color/white"/>
-        </LinearLayout>
+                android:text="Сьогодні: 0 ккал / 0 ккал"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginBottom="12dp"/>
 
-    </LinearLayout>
+            <com.foodanalyzer.views.CaloriesProgressView
+                android:id="@+id/caloriesProgressView"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginBottom="12dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_fire"
+                    app:tint="@color/white"
+                    android:layout_marginEnd="8dp"/>
+
+                <TextView
+                    android:id="@+id/tvStreak"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 днів підряд"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
         <ImageView
             android:id="@+id/ivLogo"
             android:layout_width="120dp"
@@ -159,6 +172,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnTakePhoto" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCreateMeal"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:text="Створити страву"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:letterSpacing="0.05"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/ic_add"
+            app:iconGravity="textStart"
+            app:iconPadding="12dp"
+            app:iconTint="@color/white"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnSelectFromGallery" />
 
         <ProgressBar
             android:id="@+id/progressBar"

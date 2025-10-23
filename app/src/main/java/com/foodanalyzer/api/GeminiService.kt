@@ -1,10 +1,5 @@
 package com.foodanalyzer.api
-
-import android.util.Base64
 import com.foodanalyzer.models.Food
-import com.foodanalyzer.models.NutritionInfo
-import com.foodanalyzer.models.Product
-import com.github.mikephil.charting.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
