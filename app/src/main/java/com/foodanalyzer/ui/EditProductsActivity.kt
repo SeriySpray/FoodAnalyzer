@@ -6,14 +6,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.foodanalyzer.FixTheme
 import com.foodanalyzer.adapters.ProductsAdapter
-import com.foodanalyzer.api.GeminiService
 import com.foodanalyzer.databinding.ActivityEditProductsBinding
 import com.foodanalyzer.databinding.DialogAddProductBinding
 import com.foodanalyzer.models.Food
 import com.foodanalyzer.models.Product
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,7 +22,7 @@ class EditProductsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditProductsBinding
     private lateinit var food: Food
     private lateinit var adapter: ProductsAdapter
-    private val geminiService = GeminiService()
+    private val geminiService by lazy { (application as FixTheme).geminiService }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +52,7 @@ class EditProductsActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         adapter = ProductsAdapter(
-            products = food.products.toMutableList(),
+            products = food.products,
             onDeleteClick = { position ->
                 food.products.removeAt(position)
                 adapter.updateProducts(food.products)
@@ -117,25 +117,22 @@ class EditProductsActivity : AppCompatActivity() {
         binding.progressBar.visibility = android.view.View.VISIBLE
         binding.btnAnalyze.isEnabled = false
 
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             try {
-                val analyzedFood = geminiService.analyzeNutrition(food)
-
-                withContext(Dispatchers.Main) {
-                    binding.progressBar.visibility = android.view.View.GONE
-                    binding.btnAnalyze.isEnabled = true
-
-                    val intent = Intent(this@EditProductsActivity, ResultsActivity::class.java)
-                    intent.putExtra("food_json", Gson().toJson(analyzedFood))
-                    startActivity(intent)
-                    finish()
+                val analyzedFood = withContext(Dispatchers.IO) {
+                    geminiService.analyzeNutrition(food)
                 }
+                binding.progressBar.visibility = android.view.View.GONE
+                binding.btnAnalyze.isEnabled = true
+
+                val intent = Intent(this@EditProductsActivity, ResultsActivity::class.java)
+                intent.putExtra("food_json", Gson().toJson(analyzedFood))
+                startActivity(intent)
+                finish()
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    binding.progressBar.visibility = android.view.View.GONE
-                    binding.btnAnalyze.isEnabled = true
-                    Toast.makeText(this@EditProductsActivity, "Помилка аналізу: ${e.message}", Toast.LENGTH_LONG).show()
-                }
+                binding.progressBar.visibility = android.view.View.GONE
+                binding.btnAnalyze.isEnabled = true
+                Toast.makeText(this@EditProductsActivity, "Помилка аналізу: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }

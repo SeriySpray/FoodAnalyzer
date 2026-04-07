@@ -64,7 +64,7 @@
             <com.foodanalyzer.views.CaloriesProgressView
                 android:id="@+id/caloriesProgressView"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="12dp"
                 android:layout_marginBottom="12dp"/>
 
             <LinearLayout
@@ -218,6 +218,6 @@
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"
         app:headerLayout="@layout/nav_header"
-        app:menu="@drawable/nav_menu" />
+        app:menu="@menu/nav_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

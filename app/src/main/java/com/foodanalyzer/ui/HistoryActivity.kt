@@ -11,6 +11,7 @@ import com.foodanalyzer.databinding.ActivityHistoryBinding
 import com.foodanalyzer.repository.MealRepository
 import com.foodanalyzer.adapters.MealHistoryAdapter
 import com.foodanalyzer.models.SavedMeal
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
@@ -20,6 +21,7 @@ class HistoryActivity : AppCompatActivity() {
     private lateinit var repository: MealRepository
     private lateinit var adapter: MealHistoryAdapter
     private var selectedDate: Date = Date()
+    private var loadMealsJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +72,8 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private fun loadMealsForDate(date: Date) {
-        lifecycleScope.launch {
+        loadMealsJob?.cancel()
+        loadMealsJob = lifecycleScope.launch {
             repository.getMealsByDate(date).collectLatest { meals ->
                 adapter.submitList(meals)
                 updateStatistics(meals)

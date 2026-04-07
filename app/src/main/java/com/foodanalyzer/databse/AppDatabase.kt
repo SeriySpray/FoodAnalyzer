@@ -13,7 +13,7 @@ import com.foodanalyzer.models.UserSettings
 
 @Database(
     entities = [SavedMeal::class, UserSettings::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -39,6 +39,34 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Створюємо нову таблицю з правильною схемою
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS user_settings_new (
+                        id INTEGER PRIMARY KEY NOT NULL,
+                        targetCalories REAL NOT NULL DEFAULT 0,
+                        deviationCalories REAL NOT NULL DEFAULT 0,
+                        currentStreak INTEGER NOT NULL DEFAULT 0,
+                        lastStreakDate INTEGER NOT NULL DEFAULT 0
+                    )
+                """.trimIndent())
+                // Копіюємо дані, конвертуючи min/max → target/deviation
+                database.execSQL("""
+                    INSERT INTO user_settings_new (id, targetCalories, deviationCalories, currentStreak, lastStreakDate)
+                    SELECT id,
+                           (minCalories + maxCalories) / 2.0,
+                           (maxCalories - minCalories) / 2.0,
+                           currentStreak,
+                           lastStreakDate
+                    FROM user_settings
+                """.trimIndent())
+                // Видаляємо стару таблицю і перейменовуємо нову
+                database.execSQL("DROP TABLE user_settings")
+                database.execSQL("ALTER TABLE user_settings_new RENAME TO user_settings")
+            }
+        }
+
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -46,7 +74,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "food_analyzer_database"
                 )
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
                 instance

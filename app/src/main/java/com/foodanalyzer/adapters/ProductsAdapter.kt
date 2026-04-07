@@ -48,11 +48,13 @@ class ProductsAdapter(
                 btnDelete.visibility = View.VISIBLE
 
                 btnEdit.setOnClickListener {
-                    onEditClick(position)
+                    val currentPosition = holder.bindingAdapterPosition
+                    if (currentPosition != RecyclerView.NO_ID.toInt()) onEditClick(currentPosition)
                 }
 
                 btnDelete.setOnClickListener {
-                    onDeleteClick(position)
+                    val currentPosition = holder.bindingAdapterPosition
+                    if (currentPosition != RecyclerView.NO_ID.toInt()) onDeleteClick(currentPosition)
                 }
             }
         }

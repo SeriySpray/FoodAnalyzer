@@ -10,21 +10,20 @@ class UserSettingsRepository(private val userSettingsDao: UserSettingsDao) {
 
     suspend fun getUserSettingsSync(): UserSettings? = userSettingsDao.getUserSettingsSync()
 
-    suspend fun saveSettings(minCalories: Double, maxCalories: Double) {
+    suspend fun saveSettings(targetCalories: Double, deviationCalories: Double) {
+        val current = userSettingsDao.getUserSettingsSync()
         val settings = UserSettings(
             id = 1,
-            minCalories = minCalories,
-            maxCalories = maxCalories
+            targetCalories = targetCalories,
+            deviationCalories = deviationCalories,
+            currentStreak = current?.currentStreak ?: 0,
+            lastStreakDate = current?.lastStreakDate ?: 0L
         )
         userSettingsDao.insertSettings(settings)
     }
 
     suspend fun updateStreak(streak: Int, lastDate: Long) {
-        val currentSettings = userSettingsDao.getUserSettingsSync()
-
-        // Якщо налаштувань немає, просто виходимо
-        if (currentSettings == null) return
-
+        val currentSettings = userSettingsDao.getUserSettingsSync() ?: return
         val updatedSettings = currentSettings.copy(
             currentStreak = streak,
             lastStreakDate = lastDate

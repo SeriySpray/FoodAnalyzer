@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 data class UserSettings(
         @PrimaryKey
         val id: Int = 1,
-        val minCalories: Double = 0.0,
-        val maxCalories: Double = 0.0,
+        val targetCalories: Double = 0.0,
+        val deviationCalories: Double = 0.0,
         val currentStreak: Int = 0,
         val lastStreakDate: Long = 0
 )

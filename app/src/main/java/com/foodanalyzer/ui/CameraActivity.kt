@@ -10,10 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.foodanalyzer.api.GeminiService
+import com.foodanalyzer.FixTheme
 import com.foodanalyzer.databinding.ActivityCameraBinding
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,7 +25,7 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
-    private val geminiService = GeminiService()
+    private val geminiService by lazy { (application as FixTheme).geminiService }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,26 +104,23 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun analyzeImage(bitmap: Bitmap) {
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             try {
-                val base64Image = bitmapToBase64(bitmap)
-                val food = geminiService.analyzeFood(base64Image)
-
-                withContext(Dispatchers.Main) {
-                    binding.progressBar.visibility = android.view.View.GONE
-                    binding.btnCapture.isEnabled = true
-
-                    val intent = Intent(this@CameraActivity, EditProductsActivity::class.java)
-                    intent.putExtra("food_json", Gson().toJson(food))
-                    startActivity(intent)
-                    finish()
+                val food = withContext(Dispatchers.IO) {
+                    val base64Image = bitmapToBase64(bitmap)
+                    geminiService.analyzeFood(base64Image)
                 }
+                binding.progressBar.visibility = android.view.View.GONE
+                binding.btnCapture.isEnabled = true
+
+                val intent = Intent(this@CameraActivity, EditProductsActivity::class.java)
+                intent.putExtra("food_json", Gson().toJson(food))
+                startActivity(intent)
+                finish()
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    binding.progressBar.visibility = android.view.View.GONE
-                    binding.btnCapture.isEnabled = true
-                    Toast.makeText(this@CameraActivity, "Помилка аналізу: ${e.message}", Toast.LENGTH_LONG).show()
-                }
+                binding.progressBar.visibility = android.view.View.GONE
+                binding.btnCapture.isEnabled = true
+                Toast.makeText(this@CameraActivity, "Помилка аналізу: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }

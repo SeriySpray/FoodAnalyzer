@@ -1,6 +1,8 @@
 package com.foodanalyzer.ui
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +24,7 @@ class SettingsActivity : AppCompatActivity() {
         repository = UserSettingsRepository(database.userSettingsDao())
 
         setupToolbar()
+        setupRangePreview()
         loadSettings()
 
         binding.btnSaveSettings.setOnClickListener {
@@ -32,9 +35,33 @@ class SettingsActivity : AppCompatActivity() {
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Налаштування норм"
+        supportActionBar?.title = "Налаштування"
         binding.toolbar.setNavigationOnClickListener {
             finish()
+        }
+    }
+
+    private fun setupRangePreview() {
+        val watcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) { updateRangePreview() }
+        }
+        binding.etTargetCalories.addTextChangedListener(watcher)
+        binding.etDeviationCalories.addTextChangedListener(watcher)
+    }
+
+    private fun updateRangePreview() {
+        val target = binding.etTargetCalories.text.toString().toDoubleOrNull()
+        val deviation = binding.etDeviationCalories.text.toString().toDoubleOrNull()
+
+        if (target != null && target > 0) {
+            val dev = deviation ?: 0.0
+            val min = (target - dev).toInt()
+            val max = (target + dev).toInt()
+            binding.tvRangePreview.text = "Норма: $min – $max ккал"
+        } else {
+            binding.tvRangePreview.text = ""
         }
     }
 
@@ -42,30 +69,37 @@ class SettingsActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repository.getUserSettings().collect { settings ->
                 settings?.let {
-                    binding.etMinCalories.setText(it.minCalories.toInt().toString())
-                    binding.etMaxCalories.setText(it.maxCalories.toInt().toString())
+                    if (it.targetCalories > 0) {
+                        binding.etTargetCalories.setText(it.targetCalories.toInt().toString())
+                        binding.etDeviationCalories.setText(it.deviationCalories.toInt().toString())
+                    }
                 }
             }
         }
     }
 
     private fun saveSettings() {
-        val minCalories = binding.etMinCalories.text.toString().toDoubleOrNull()
-        val maxCalories = binding.etMaxCalories.text.toString().toDoubleOrNull()
+        val target = binding.etTargetCalories.text.toString().toDoubleOrNull()
+        val deviation = binding.etDeviationCalories.text.toString().toDoubleOrNull()
 
-        if (minCalories == null || maxCalories == null) {
-            Toast.makeText(this, "Заповніть всі поля", Toast.LENGTH_SHORT).show()
+        if (target == null || target <= 0) {
+            Toast.makeText(this, "Введіть ціль калорій", Toast.LENGTH_SHORT).show()
             return
         }
 
-        if (minCalories >= maxCalories) {
-            Toast.makeText(this, "Мінімум повинен бути менше максимуму", Toast.LENGTH_SHORT).show()
+        if (deviation == null || deviation < 0) {
+            Toast.makeText(this, "Введіть допустиме відхилення (0 або більше)", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (deviation >= target) {
+            Toast.makeText(this, "Відхилення повинно бути менше цілі", Toast.LENGTH_SHORT).show()
             return
         }
 
         lifecycleScope.launch {
-            repository.saveSettings(minCalories, maxCalories)
-            Toast.makeText(this@SettingsActivity, "Налаштування збережено", Toast.LENGTH_SHORT).show()
+            repository.saveSettings(target, deviation)
+            Toast.makeText(this@SettingsActivity, "Збережено", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
