@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/popup_menu_background"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/menuRenameFolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/rename_folder"
+        android:textColor="#B3FFFFFF"
+        android:textSize="14sp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="12dp"
+        android:background="?attr/selectableItemBackground"
+        android:drawableStart="@drawable/ic_edit"
+        android:drawablePadding="8dp"
+        android:drawableTint="#B3FFFFFF" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="2dp"
+        android:background="#33FFFFFF" />
+
+    <TextView
+        android:id="@+id/menuDeleteFolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_folder"
+        android:textColor="#B3FFFFFF"
+        android:textSize="14sp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="12dp"
+        android:background="?attr/selectableItemBackground"
+        android:drawableStart="@drawable/ic_delete"
+        android:drawablePadding="8dp"
+        android:drawableTint="#B3FFFFFF" />
+
+</LinearLayout>

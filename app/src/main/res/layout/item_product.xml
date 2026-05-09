@@ -1,117 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<!-- Product item — minimal row style -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="0dp"
-    app:cardBackgroundColor="@color/gray_dark">
+    android:orientation="vertical"
+    android:background="@drawable/card_field_bg"
+    android:layout_marginBottom="8dp"
+    android:padding="14dp">
 
+    <!-- Main row: name + weight + buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_weight="1"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-medium"
+            android:lineSpacingExtra="2dp"
+            tools:text="Буряк" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvProductName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Продукт"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"/>
-
-                <TextView
-                    android:id="@+id/tvProductWeight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="100 г"
-                    android:textSize="13sp"
-                    android:textColor="@color/gray_text"
-                    android:layout_marginTop="4dp"/>
-            </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/btnEdit"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_edit"
-                android:contentDescription="Редагувати"
-                app:tint="@color/white"
-                android:layout_marginEnd="8dp"/>
-
-            <ImageButton
-                android:id="@+id/btnDelete"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_delete"
-                android:contentDescription="Видалити"
-                app:tint="@color/gray_text"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/nutritionLayout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvProductWeight"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="12dp"
-            android:padding="12dp"
-            android:background="@color/gray_medium"
-            android:visibility="gone">
+            android:textColor="@color/text_secondary"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginStart="8dp"
+            tools:text="200г" />
 
-            <TextView
-                android:id="@+id/tvCalories"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Калорії: 0 ккал"
-                android:textSize="13sp"
-                android:textColor="@color/white"
-                android:layout_marginBottom="4dp"/>
+        <ImageButton
+            android:id="@+id/btnEdit"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="8dp"
+            android:background="@null"
+            android:src="@drawable/ic_edit"
+            android:scaleType="centerInside"
+            android:padding="4dp"
+            android:visibility="gone"
+            android:contentDescription="Edit"
+            android:tint="@color/text_muted" />
 
-            <TextView
-                android:id="@+id/tvProteins"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Білки: 0 г"
-                android:textSize="13sp"
-                android:textColor="@color/white"
-                android:layout_marginBottom="4dp"/>
-
-            <TextView
-                android:id="@+id/tvFats"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Жири: 0 г"
-                android:textSize="13sp"
-                android:textColor="@color/white"
-                android:layout_marginBottom="4dp"/>
-
-            <TextView
-                android:id="@+id/tvCarbs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Вуглеводи: 0 г"
-                android:textSize="13sp"
-                android:textColor="@color/white"/>
-        </LinearLayout>
-
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="4dp"
+            android:background="@null"
+            android:src="@drawable/ic_delete"
+            android:scaleType="centerInside"
+            android:padding="4dp"
+            android:visibility="gone"
+            android:contentDescription="Delete"
+            android:tint="@color/text_muted" />
     </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView>
+    <!-- Nutrition sub-info (shown in results mode) -->
+    <LinearLayout
+        android:id="@+id/nutritionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvCalories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_dim"
+            android:textSize="12sp"
+            android:layout_marginEnd="10dp"
+            tools:text="Калорії: 120.0 ккал" />
+
+        <TextView
+            android:id="@+id/tvProteins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#4CAF50"
+            android:textSize="12sp"
+            android:layout_marginEnd="10dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvFats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF9800"
+            android:textSize="12sp"
+            android:layout_marginEnd="10dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tvCarbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#2196F3"
+            android:textSize="12sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sort dialog — design-screens-v3 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="260dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_background"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/menu_sort"
+        android:textColor="@color/text_primary"
+        android:textSize="13sp"
+        android:fontFamily="sans-serif-medium"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/sortByName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sort_by_name"
+        android:textColor="@color/text_tertiary"
+        android:textSize="12sp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="8dp"
+        android:background="?attr/selectableItemBackground" />
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" />
+
+    <TextView
+        android:id="@+id/sortByTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sort_by_time_asc"
+        android:textColor="@color/text_tertiary"
+        android:textSize="12sp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="8dp"
+        android:background="?attr/selectableItemBackground" />
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" />
+
+    <TextView
+        android:id="@+id/sortByDifficulty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sort_by_difficulty"
+        android:textColor="@color/text_tertiary"
+        android:textSize="12sp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="8dp"
+        android:background="?attr/selectableItemBackground" />
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" />
+
+    <TextView
+        android:id="@+id/sortByDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sort_by_date"
+        android:textColor="@color/text_tertiary"
+        android:textSize="12sp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="8dp"
+        android:background="?attr/selectableItemBackground" />
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider" />
+
+    <TextView
+        android:id="@+id/sortByCalories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="За калоріями"
+        android:textColor="@color/text_tertiary"
+        android:textSize="12sp"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="8dp"
+        android:background="?attr/selectableItemBackground" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:paddingTop="12dp">
+
+        <TextView
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chip_bg"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="8dp"
+            android:text="@string/cancel"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,15 @@
+{
+  "skills": {
+    "disabled": [
+      "skill-creator",
+      "web-design-guidelines",
+      "use-of-color",
+      "ui-ux-pro-max",
+      "refactor",
+      "vercel-react-best-practices",
+      "vercel-react-native-skills",
+      "prisma-database-setup",
+      "prisma-client-api"
+    ]
+  }
+}

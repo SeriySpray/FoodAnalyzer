@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Камера — design-screens-v3 (minimal overlay) -->
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,23 +18,26 @@
 
     <ImageButton
         android:id="@+id/btnBack"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         android:layout_margin="16dp"
-        android:background="@drawable/btn_circle_background"
+        android:background="@drawable/icon_btn_bg"
         android:src="@drawable/ic_arrow_back"
+        android:scaleType="centerInside"
+        android:padding="8dp"
         android:contentDescription="Назад"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:tint="@color/white"/>
+        app:tint="@color/text_tertiary"/>
 
+    <!-- Capture button: white ring -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCapture"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginBottom="40dp"
-        app:cornerRadius="36dp"
-        app:strokeWidth="3dp"
+        app:cornerRadius="32dp"
+        app:strokeWidth="2dp"
         app:strokeColor="@color/white"
         android:backgroundTint="@android:color/transparent"
         android:contentDescription="Зробити фото"

@@ -1,5 +1,123 @@
 <resources>
-    <string name="app_name">FoodAnalyzer</string>
-    <string name="navigation_drawer_open">Відкрити меню</string>
-    <string name="navigation_drawer_close">Закрити меню</string>
+    <string name="app_name">RecipeFood</string>
+
+    <!-- Menu -->
+    <string name="menu_search">Пошук</string>
+    <string name="menu_add">Додати рецепт</string>
+    <string name="menu_sort">Сортувати</string>
+
+    <!-- Main Activity -->
+    <string name="no_recipes">Рецептів поки що немає.\nНатисніть + щоб додати.</string>
+    <string name="recipe_deleted">Рецепт видалено</string>
+
+    <!-- Add/Edit Recipe -->
+    <string name="add_recipe_title">Додати рецепт</string>
+    <string name="edit_recipe_title">Редагувати рецепт</string>
+    <string name="recipe_name">Назва рецепту</string>
+    <string name="recipe_name_hint">Введіть назву</string>
+    <string name="ingredients">Інгредієнти</string>
+    <string name="ingredients_hint">Введіть інгредієнти (кожен з нового рядка)</string>
+    <string name="difficulty">Складність</string>
+    <string name="cooking_time">Час приготування (хв)</string>
+    <string name="cooking_time_hint">60</string>
+    <string name="instructions">Інструкція приготування</string>
+    <string name="instructions_hint">Опишіть процес приготування</string>
+    <string name="save">Зберегти</string>
+    <string name="cancel">Скасувати</string>
+
+    <!-- Difficulty levels -->
+    <string name="difficulty_easy">Легкий</string>
+    <string name="difficulty_medium">Середній</string>
+    <string name="difficulty_hard">Складний</string>
+
+    <!-- Recipe Detail -->
+    <string name="ingredients_title">Інгредієнти:</string>
+    <string name="instructions_title">Приготування:</string>
+    <string name="time_label">Час:</string>
+    <string name="difficulty_label">Складність:</string>
+    <string name="minutes">хв</string>
+    <string name="edit">Редагувати</string>
+    <string name="delete">Видалити</string>
+
+    <!-- Search -->
+    <string name="search_title">Пошук рецептів</string>
+    <string name="search_hint">Введіть назву, інгредієнти через кому або пробіл</string>
+    <string name="search">Шукати</string>
+    <string name="no_results">Нічого не знайдено</string>
+    <string name="search_by_name">Пошук за назвою</string>
+    <string name="search_by_ingredients">Пошук за інгредієнтами</string>
+    <string name="search_complex">Комплексний пошук</string>
+
+    <!-- Sort -->
+    <string name="sort_by">Сортувати за:</string>
+    <string name="sort_by_name">За назвою</string>
+    <string name="sort_by_time">За часом</string>
+    <string name="sort_by_time_asc">За часом</string>
+    <string name="sort_by_difficulty">За складністю</string>
+    <string name="sort_by_date">За датою додавання</string>
+
+    <!-- Validation -->
+    <string name="error_empty_name">Введіть назву рецепту</string>
+    <string name="error_empty_ingredients">Додайте хоча б один інгредієнт</string>
+    <string name="error_empty_instructions">Додайте інструкцію приготування</string>
+    <string name="error_invalid_time">Введіть коректний час</string>
+
+    <!-- Dialogs -->
+    <string name="delete_recipe_title">Видалити рецепт?</string>
+    <string name="delete_recipe_message">Ця дія незворотна</string>
+    <string name="yes">Так</string>
+    <string name="no">Ні</string>
+
+    <!-- Success messages -->
+    <string name="recipe_added">Рецепт додано</string>
+    <string name="recipe_updated">Рецепт оновлено</string>
+
+    <!-- Cooking status -->
+    <string name="times_cooked_label">Кількість приготувань:</string>
+
+    <!-- Folders -->
+    <string name="folder_menu">Меню папки</string>
+    <string name="create_folder">Створити папку</string>
+    <string name="rename_folder">Перейменувати</string>
+    <string name="delete_folder">Видалити</string>
+    <string name="folder_name">Назва папки</string>
+    <string name="folder_name_hint">Введіть назву папки</string>
+    <string name="folder_created">Папку створено</string>
+    <string name="folder_updated">Папку оновлено</string>
+    <string name="folder_deleted">Папку видалено</string>
+    <string name="delete_folder_confirmation">Видалити папку \"%s\"?</string>
+    <string name="delete_folder_warning">Всі рецепти з цієї папки будуть видалені!</string>
+    <string name="folder_name_required">Введіть назву папки</string>
+    <string name="add_recipe_to_folder">Додати рецепт до папки</string>
+    <string name="select_folder">Виберіть папку</string>
+    <string name="create_folder_first">Спочатку створіть папку</string>
+
+    <!-- КБЖВ -->
+    <string name="nutrition_section_title">КБЖВ (на весь рецепт)</string>
+    <string name="calculate_nutrition">Розрахувати КБЖВ</string>
+    <string name="calories_hint">Калорії (ккал)</string>
+    <string name="proteins_hint">Білки (г)</string>
+    <string name="fats_hint">Жири (г)</string>
+    <string name="carbs_hint">Вуглеводи (г)</string>
+    <string name="nutrition_calculated">КБЖВ розраховано</string>
+    <string name="nutrition_error_no_ingredients">Спочатку введіть інгредієнти</string>
+    <string name="nutrition_error_network">Немає інтернету. КБЖВ недоступне</string>
+    <string name="nutrition_calculating">Розраховуємо КБЖВ…</string>
+    <string name="groq_rate_limit">Перевищено ліміт запитів. Зачекайте хвилину</string>
+    <string name="groq_invalid_key">Невірний API ключ. Перевірте налаштування</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_title">Сьогодні</string>
+    <string name="calories_today">Калорії сьогодні</string>
+    <string name="proteins_label">Білки</string>
+    <string name="fats_label">Жири</string>
+    <string name="carbs_label">Вуглеводи</string>
+    <string name="streak_label">Серія активних днів</string>
+    <string name="days_suffix">дн.</string>
+    <string name="view_history">Переглянути журнал</string>
+    <string name="of_goal">з %d ккал</string>
+
+    <!-- Navigation -->
+    <string name="settings_title">Налаштування</string>
+    <string name="analyze_food_button">Аналіз страви</string>
 </resources>

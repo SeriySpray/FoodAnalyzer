@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Folder item — minimal row style (design-screens-v3) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="10dp"
+    android:background="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/expandIconTextView"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:gravity="center"
+        android:textColor="@color/text_dim"
+        android:textSize="10sp"
+        tools:text="▼" />
+
+    <TextView
+        android:id="@+id/folderNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:fontFamily="sans-serif-medium"
+        tools:text="Ваші рецепти" />
+
+    <ImageView
+        android:id="@+id/addRecipeButton"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_add"
+        android:background="@null"
+        android:contentDescription="@string/menu_add"
+        app:tint="@color/text_dim"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
+
+    <ImageView
+        android:id="@+id/folderMenuButton"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:padding="4dp"
+        android:src="@drawable/ic_more"
+        android:background="@null"
+        android:contentDescription="@string/folder_menu"
+        app:tint="@color/text_dim"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
+
+    <!-- Hidden bottom divider for compat -->
+    <View
+        android:id="@+id/bottomDivider"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+</LinearLayout>
